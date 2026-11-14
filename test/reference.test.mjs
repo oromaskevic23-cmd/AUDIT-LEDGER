@@ -1,0 +1,13 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {generateKeyPairSync} from 'node:crypto';
+import {append,checkpoint,verifyLedger} from '../src/index.mjs';
+const {publicKey,privateKey}=generateKeyPairSync('ed25519');
+const a={id:'one',kind:'VETO',digest:'a'.repeat(64)}, b={id:'two',kind:'DENY',digest:'b'.repeat(64)};
+const entries=append(append([],a),b), receipt=checkpoint(entries,privateKey);
+test('signed checkpoint',()=>assert.equal(verifyLedger(entries,receipt,publicKey),true));
+test('truncation',()=>assert.equal(verifyLedger(entries.slice(0,1),receipt,publicKey),false));
+test('reorder',()=>assert.equal(verifyLedger([...entries].reverse(),receipt,publicKey),false));
+test('tamper',()=>assert.equal(verifyLedger([{...entries[0],event:{...a,kind:'ALLOW'}},entries[1]],receipt,publicKey),false));
+test('duplicate',()=>assert.throws(()=>append(entries,a)));
+test('wrong key',()=>assert.equal(verifyLedger(entries,receipt,generateKeyPairSync('ed25519').publicKey),false));
