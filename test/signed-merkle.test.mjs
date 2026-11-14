@@ -1,0 +1,11 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {generateKeyPairSync} from 'node:crypto';
+import {signMerkle,inclusionProof,verifySignedInclusion} from '../src/signed-merkle.mjs';
+const k=generateKeyPairSync('ed25519'),values=['a','b','c'].map(x=>x.repeat(64));
+const receipt=signMerkle(values,'demo','audit',k.privateKey),proof=inclusionProof(values,1),expected={org:'demo',ledger:'audit',size:3};
+const check=(r=receipt,e=expected,value=values[1])=>verifySignedInclusion(value,proof,r,k.publicKey,e);
+test('signed scoped inclusion',()=>assert.equal(check(),true));
+test('cross tenant and ledger denied',()=>{assert.equal(check(receipt,{...expected,org:'other'}),false);assert.equal(check(receipt,{...expected,ledger:'other'}),false);});
+test('wrong size denied',()=>assert.equal(check(receipt,{...expected,size:2}),false));
+test('tamper root or leaf denied',()=>{assert.equal(check({...receipt,payload:{...receipt.payload,root:values[0]}}),false);assert.equal(check(receipt,expected,values[0]),false);});
