@@ -43,3 +43,7 @@ No persistent append-only store, external witness, Merkle inclusion proofs, trus
 Public source visibility is not a license grant. See [LICENSE](LICENSE).
 
 **Architecture Before Implementation. Evidence Before Trust.**
+
+## Security hardening v0.2
+
+[Implementation](src/merkle.mjs) · [Tests](test/merkle.test.mjs) · [Evidence and limitations](docs/HARDENING_V0_2.md).
