@@ -47,3 +47,9 @@ Public source visibility is not a license grant. See [LICENSE](LICENSE).
 ## Security hardening v0.2
 
 [Implementation](src/merkle.mjs) · [Tests](test/merkle.test.mjs) · [Evidence and limitations](docs/HARDENING_V0_2.md).
+
+## Security composition v0.3
+
+Signed Merkle checkpoints bind organization, ledger identity, size and root; verification checks all of these against trusted context. Inclusion is not a consistency proof, external witness, timestamp or proof against signer equivocation.
+
+[Implementation](src/signed-merkle.mjs) · [Tests](test/signed-merkle.test.mjs) · [Scope and evidence](docs/COMPOSITION_V0_3.md).
