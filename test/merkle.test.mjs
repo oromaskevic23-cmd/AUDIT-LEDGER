@@ -1,0 +1,11 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {merkleRoot,inclusionProof,verifyInclusion} from '../src/merkle.mjs';
+const a=['a','b','c','d','e'].map(x=>x.repeat(64)),root=merkleRoot(a),p=inclusionProof(a,4);
+test('all leaves across odd tree sizes',()=>{for(let n=1;n<=a.length;n++){const v=a.slice(0,n),r=merkleRoot(v);for(let i=0;i<n;i++)assert.equal(verifyInclusion(v[i],inclusionProof(v,i),r,n),true);}});
+test('substituted leaf',()=>assert.equal(verifyInclusion(a[0],p,root,5),false));
+test('wrong position',()=>assert.equal(verifyInclusion(a[4],{...p,index:0},root,5),false));
+test('wrong authenticated size',()=>assert.equal(verifyInclusion(a[4],p,root,4),false));
+test('extra sibling',()=>assert.equal(verifyInclusion(a[4],{...p,siblings:[...p.siblings,a[0]]},root,5),false));
+test('wrong root',()=>assert.equal(verifyInclusion(a[4],p,a[0],5),false));
+test('invalid leaves',()=>assert.throws(()=>merkleRoot(['bad'])));
