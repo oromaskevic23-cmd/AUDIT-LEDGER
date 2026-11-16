@@ -10,10 +10,13 @@ export function signMerkle(values,org,ledger,key){
   return {payload,signature:sign(null,bytes(payload),key).toString('hex')};
 }
 export {inclusionProof};
-export function verifySignedInclusion(value,proof,receipt,key,expected){
+export function verifyMerkleCheckpoint(receipt,key,expected){
   try{
     const {payload:p,signature:s}=receipt, msg=bytes(p);
     if(p.org!==expected.org||p.ledger!==expected.ledger||!Number.isSafeInteger(expected.size)||p.size!==expected.size||key.asymmetricKeyType!=='ed25519'||typeof s!=='string'||!/^[a-f0-9]{128}$/.test(s)||!verify(null,msg,key,Buffer.from(s,'hex')))return false;
-    return verifyInclusion(value,proof,p.root,p.size);
+    return true;
   }catch{return false;}
+}
+export function verifySignedInclusion(value,proof,receipt,key,expected){
+  return verifyMerkleCheckpoint(receipt,key,expected)&&verifyInclusion(value,proof,receipt.payload.root,receipt.payload.size);
 }

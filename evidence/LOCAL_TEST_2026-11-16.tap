@@ -1,0 +1,160 @@
+TAP version 13
+# Subtest: all leaves across odd tree sizes
+ok 1 - all leaves across odd tree sizes
+  ---
+  duration_ms: 7.980236
+  type: 'test'
+  ...
+# Subtest: substituted leaf
+ok 2 - substituted leaf
+  ---
+  duration_ms: 0.389516
+  type: 'test'
+  ...
+# Subtest: wrong position
+ok 3 - wrong position
+  ---
+  duration_ms: 11.938002
+  type: 'test'
+  ...
+# Subtest: wrong authenticated size
+ok 4 - wrong authenticated size
+  ---
+  duration_ms: 0.436597
+  type: 'test'
+  ...
+# Subtest: extra sibling
+ok 5 - extra sibling
+  ---
+  duration_ms: 0.290577
+  type: 'test'
+  ...
+# Subtest: wrong root
+ok 6 - wrong root
+  ---
+  duration_ms: 0.331099
+  type: 'test'
+  ...
+# Subtest: invalid leaves
+ok 7 - invalid leaves
+  ---
+  duration_ms: 4.431687
+  type: 'test'
+  ...
+# Subtest: signed checkpoint
+ok 8 - signed checkpoint
+  ---
+  duration_ms: 3.561409
+  type: 'test'
+  ...
+# Subtest: truncation
+ok 9 - truncation
+  ---
+  duration_ms: 0.349867
+  type: 'test'
+  ...
+# Subtest: reorder
+ok 10 - reorder
+  ---
+  duration_ms: 0.211178
+  type: 'test'
+  ...
+# Subtest: tamper
+ok 11 - tamper
+  ---
+  duration_ms: 0.281644
+  type: 'test'
+  ...
+# Subtest: duplicate
+ok 12 - duplicate
+  ---
+  duration_ms: 1.702592
+  type: 'test'
+  ...
+# Subtest: wrong key
+ok 13 - wrong key
+  ---
+  duration_ms: 0.673363
+  type: 'test'
+  ...
+# Subtest: signed scoped inclusion
+ok 14 - signed scoped inclusion
+  ---
+  duration_ms: 2.657929
+  type: 'test'
+  ...
+# Subtest: cross tenant and ledger denied
+ok 15 - cross tenant and ledger denied
+  ---
+  duration_ms: 0.296366
+  type: 'test'
+  ...
+# Subtest: wrong size denied
+ok 16 - wrong size denied
+  ---
+  duration_ms: 0.213401
+  type: 'test'
+  ...
+# Subtest: tamper root or leaf denied
+ok 17 - tamper root or leaf denied
+  ---
+  duration_ms: 0.6909
+  type: 'test'
+  ...
+# Subtest: events persist and a retained checkpoint accepts a genuine extension
+ok 18 - events persist and a retained checkpoint accepts a genuine extension
+  ---
+  duration_ms: 7.141365
+  type: 'test'
+  ...
+# Subtest: retained checkpoint detects truncation of an otherwise valid chain
+ok 19 - retained checkpoint detects truncation of an otherwise valid chain
+  ---
+  duration_ms: 2.481403
+  type: 'test'
+  ...
+# Subtest: modified event is detected before reading or appending
+ok 20 - modified event is detected before reading or appending
+  ---
+  duration_ms: 1.619597
+  type: 'test'
+  ...
+# Subtest: database is bound to its organization and ledger
+ok 21 - database is bound to its organization and ledger
+  ---
+  duration_ms: 1.6086
+  type: 'test'
+  ...
+# Subtest: duplicate event is rejected across connections
+ok 22 - duplicate event is rejected across connections
+  ---
+  duration_ms: 2.187992
+  type: 'test'
+  ...
+# Subtest: checkpoint signature, scope and size are required
+ok 23 - checkpoint signature, scope and size are required
+  ---
+  duration_ms: 3.074716
+  type: 'test'
+  ...
+# Subtest: database is private and rejects symlinks or broad modes on POSIX
+ok 24 - database is private and rejects symlinks or broad modes on POSIX
+  ---
+  duration_ms: 1.76794
+  type: 'test'
+  ...
+# Subtest: memory, URI and invalid scoped input are rejected
+ok 25 - memory, URI and invalid scoped input are rejected
+  ---
+  duration_ms: 0.268354
+  type: 'test'
+  ...
+1..25
+# tests 25
+# suites 0
+# pass 25
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 565.596225

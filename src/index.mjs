@@ -7,6 +7,7 @@ function eventBytes(event) {
 }
 const entryHash=(seq,prev,event)=>hash('IMPERIAL:audit:event:v1\n'+JSON.stringify([seq,prev,eventBytes(event)]));
 function inspect(entries) {
+  if (!Array.isArray(entries)||entries.length>100000) throw Error('entries');
   let prev=genesis; const ids=new Set();
   for (let i=0;i<entries.length;i++) {
     const e=entries[i]; if (!e || Object.keys(e).length!==4 || e.seq!==i+1 || e.prev!==prev || ids.has(e.event.id) || e.hash!==entryHash(e.seq,e.prev,e.event)) throw Error('chain');
@@ -16,8 +17,12 @@ function inspect(entries) {
 }
 export function append(entries,event) {
   const prev=inspect(entries); eventBytes(event);
+  if (entries.length>=100000) throw Error('ledger limit');
   if (entries.some(e=>e.event.id===event.id)) throw Error('duplicate');
   const seq=entries.length+1; return [...entries,{seq,prev,event:{...event},hash:entryHash(seq,prev,event)}];
+}
+export function verifyChain(entries) {
+  try {inspect(entries);return true;} catch {return false;}
 }
 const checkpointBytes=(length,head)=>Buffer.from('IMPERIAL:audit:checkpoint:v1\n'+JSON.stringify([length,head]));
 export function checkpoint(entries,key) {

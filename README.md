@@ -12,13 +12,13 @@ Hash-chained synthetic event records and Ed25519-signed checkpoints with indepen
 
 ## Quick start
 
-Node.js 22+; no external dependencies or paid services.
+Node.js 22.13+; no external dependencies or paid services. The local run in this iteration used Node.js 24.22.1.
 
 ```sh
 npm test
 ```
 
-API: `append(entries, event); checkpoint(entries, privateKey); verifyLedger(entries, receipt, publicKey)`.
+Use `SQLiteLedger` for the local persistent reference. The lower-level in-memory API remains `append(entries, event); checkpoint(entries, privateKey); verifyLedger(entries, receipt, publicKey)`.
 
 - [Architecture and release gates](ARCHITECTURE.md)
 - [Threat model](THREAT_MODEL.md)
@@ -28,7 +28,7 @@ API: `append(entries, event); checkpoint(entries, privateKey); verifyLedger(entr
 
 ## Limitations
 
-No persistent append-only store, external witness, Merkle inclusion proofs, trusted timestamp, tenant authorization or production immutability. A trusted externally retained checkpoint is necessary to detect history replacement.
+The local SQLite ledger and signed Merkle inclusion checks are reference implementations. There is no external witness, trusted timestamp, tenant authentication, WORM storage or production immutability. A trusted externally retained checkpoint is necessary to detect history replacement.
 
 ## Related components
 
@@ -43,6 +43,12 @@ No persistent append-only store, external witness, Merkle inclusion proofs, trus
 Public source visibility is not a license grant. See [LICENSE](LICENSE).
 
 **Architecture Before Implementation. Evidence Before Trust.**
+
+## Local persistent evidence
+
+[SQLiteLedger](src/sqlite-ledger.mjs) stores synthetic digest-only events in a scoped local SQLite file, checks the full hash chain and can verify a prefix against a separately retained signed Merkle checkpoint. The checkpoint and trusted public key must be kept outside the database's trust domain. A deleted or replaced ledger cannot be detected without that retained evidence. This reference scans the chain on every append and is not a scalable or immutable production ledger.
+
+SQLite files are created with owner-only POSIX permissions; existing files with broader permissions and symlinks are rejected on POSIX. Use a trusted directory and protect the database against replacement. Windows ACL enforcement is not implemented or tested. A synthetic cross-component check is available with `node --test integration/*.test.mjs` when all four repository directories are present as siblings; it does not prove production integration.
 
 ## Security hardening v0.2
 
